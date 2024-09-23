@@ -1,4 +1,3 @@
-import SignUp from './Components/AdminSignup/SignupComponent'
 import { ThemeProvider } from '@mui/material/styles'
 import RouteComponent from './Router/route';
 import theme from './theme.js'
