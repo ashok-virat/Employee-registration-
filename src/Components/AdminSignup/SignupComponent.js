@@ -4,6 +4,7 @@ import "./admin.css";
 import { useRef } from "react";
 import useToggle from './useToggle'
 import { useNavigate } from "react-router-dom";
+import UserService from './../../Service/UserService'
 
 const SignUp = () => {
     const navigate = useNavigate();
@@ -15,17 +16,26 @@ const SignUp = () => {
     const userPass = useRef("");
 
     const handleSignUp = async () => {
-        console.log(userFirstName)
-        console.log(userLastName)
-        console.log(userEmailId)
-        console.log(userName)
-        console.log(userPass)
+        let employee = {
+            userName: userName.current.value,
+            email: userEmailId.current.value,
+            userType: 'employe',
+            isApproved: false,
+            password: userPass.current.value
+        }
+        try {
+            await UserService.signup(employee)
+            navigate('/signin')
+        }
+        catch (e) {
+            console.log(e)
+        }
     };
 
     return (
         <div className="signup-signin-wrapper">
             <div className="signup-signin-child-wrapper">
-                <h2 className="text-center">Admin Signup</h2>
+                <h2 className="text-center">Register</h2>
                 <div className="first_last_name_wrapper mb-3">
                     <div className="d-flex flex-column">
                         <label className="text-start pb-2">First Name *</label>

@@ -16,8 +16,14 @@ const SignIn = () => {
 
     const handleLogin = async () => {
         try {
-            const data = await UserService.signin({ email: userName.current.value, password: userPass.current.value })
-            console.log(data)
+            const { data } = await UserService.signin({ email: userName.current.value, password: userPass.current.value })
+            localStorage.setItem('user', JSON.stringify(data))
+            if (data?.userType === 'admin') {
+                navigate('/admin')
+            }
+            else {
+                navigate('/employe')
+            }
         }
         catch (e) {
             console.log(e)
