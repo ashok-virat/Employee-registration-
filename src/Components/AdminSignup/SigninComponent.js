@@ -1,5 +1,5 @@
 import { Button, Checkbox, FormControlLabel, TextField } from "@mui/material";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import useToggle from "./useToggle";
 import { useNavigate } from "react-router-dom";
 
@@ -7,8 +7,6 @@ const SignIn = () => {
     const navigate = useNavigate();
 
     const { status: isShowPass, toggleStatus: toggleShow } = useToggle();
-    const [anchorEl, setAnchorEl] = useState(null)
-    const open = Boolean(anchorEl);
 
 
     const userName = useRef("");
@@ -16,17 +14,6 @@ const SignIn = () => {
 
     const handleLogin = async () => {
     };
-
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
-
-    const handleSelect = () => {
-
-    }
 
     return (
         <div className="signup-signin-wrapper">
