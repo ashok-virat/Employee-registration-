@@ -6,6 +6,7 @@ const Signup = lazy(() => import('../Components/AdminSignup/SignupComponent'))
 const Signin = lazy(() => import('../Components/AdminSignup/SigninComponent'))
 const EmployerHome = lazy(() => import('../Components/Employer/EmployerHome'))
 const AdminHomePage = lazy(() => import('../Components/AdminHome/AdminHome'))
+const RegisteredUserPage = lazy(() => import('../Components/AdminHome/ViewRegisterUsers'))
 
 const RouteComponent = () => {
 
@@ -22,6 +23,7 @@ const RouteComponent = () => {
                     <Route exact path="/signin" element={<Signin />} />
                     <Route exact path="/employe" element={<EmployerHome />} />
                     <Route exact path="/admin" element={< AdminHomePage />} />
+                    <Route exact path="/user" element={< RegisteredUserPage />} />
                 </Routes>
             </Suspense>
         </Router>

@@ -96,7 +96,7 @@ const CreateArtPopup = ({ open, handleClose, user }) => {
         event.preventDefault();
         try {
             await UserService.createArt(
-                { artName: art.artName, description: art.artDescription, status: 'inProgress', createdBy: user?._id })
+                { artName: art.artName, description: art.artDescription, status: 'inProgress', createdBy: user?._id, ownerName: user.userName })
             handleClose();
         }
         catch (e) {
