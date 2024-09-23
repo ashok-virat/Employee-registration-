@@ -1,0 +1,26 @@
+.first_last_name_wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 10px;
+  }
+  
+  .signup-signin-wrapper {
+    display: flex;
+    justify-content: center;
+  }
+  .signup-signin-child-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 55%;
+  }
+  
+  .stream-text {
+    font-size: xx-large;
+    font-weight: bold;
+    font-family: "Lucida Console", "Courier New", monospace;
+    color: grey;
+    background: linear-gradient(to right, #f32170, #ff6b08, #cf23cf, #eedd44);
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+  }
