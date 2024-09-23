@@ -16,6 +16,10 @@ const SignUp = () => {
 
     const handleSignUp = async () => {
         console.log(userFirstName)
+        console.log(userLastName)
+        console.log(userEmailId)
+        console.log(userName)
+        console.log(userPass)
     };
 
     return (

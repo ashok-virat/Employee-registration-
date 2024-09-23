@@ -2,6 +2,8 @@ import { Button, Checkbox, FormControlLabel, TextField } from "@mui/material";
 import { useRef } from "react";
 import useToggle from "./useToggle";
 import { useNavigate } from "react-router-dom";
+import UserService from './../../Service/UserService'
+import "./admin.css";
 
 const SignIn = () => {
     const navigate = useNavigate();
@@ -13,6 +15,13 @@ const SignIn = () => {
     const userPass = useRef("");
 
     const handleLogin = async () => {
+        try {
+            const data = await UserService.signin({ email: userName.current.value, password: userPass.current.value })
+            console.log(data)
+        }
+        catch (e) {
+            console.log(e)
+        }
     };
 
     return (
