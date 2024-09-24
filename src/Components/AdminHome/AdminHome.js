@@ -35,7 +35,6 @@ import './admin.css'
 const UserTable = () => {
     ChartJS.register(ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
     const navigate = useNavigate();
-    const [arts, setArts] = useState([])
 
     const [chartData, setChartData] = useState({
         inProgressCount: 0,
@@ -51,7 +50,6 @@ const UserTable = () => {
         try {
             setLoading(true)
             const data = await UserService.getAllArts()
-            setArts(data.data)
             const user = await UserService.getUserBasedArts()
             setLoading(false)
             setUserArts(user.data)
@@ -103,7 +101,6 @@ const UserTable = () => {
             const data = await UserService.getAllArts(date[0], date[1])
             const user = await UserService.getUserBasedArts(date[0], date[1])
             if (data?.data && Array.isArray(user.data)) {
-                setArts(data.data)
                 setUserArts(user.data)
                 setChartData({
                     inProgressCount: data.data.inProgressCount,
@@ -112,7 +109,6 @@ const UserTable = () => {
 
             }
             else {
-                setArts([])
                 setUserArts([])
                 setChartData({
                     inProgressCount: 0,
@@ -139,9 +135,9 @@ const UserTable = () => {
                 <div className="col">
                     <div className="d-flex justify-content-between mt-2">    <span>
                         <Typography variant="h6" gutterBottom>
-                            Dashboard - <span style={{ fontWeight: 900 }}>Total artworks {arts.length}</span>
+                            Dashboard - <span style={{ fontWeight: 900 }}>Total artworks {chartData.inProgressCount + chartData.completedCount}</span>
                         </Typography></span>
-                        <Button variant="outlined" onClick={() => {
+                        <Button variant="contained" onClick={() => {
                             navigate('/user')
                         }} >View Registered Users</Button></div>
                     <div className="d-flex align-content-center pt-3">
@@ -172,8 +168,8 @@ const UserTable = () => {
                                 <Typography variant="h6" gutterBottom>
                                     Art Work Progress
                                 </Typography>
-                                <div style={{ maxHeight: '250px', margin: '0 auto', }}>
-                                    <Pie data={pieData} />
+                                <div style={{ maxHeight: '270px', margin: '0 auto', }}>
+                                    <Pie style={{ margin: '0 auto' }} data={pieData} />
                                 </div>
                             </Paper>
                         </Grid>
@@ -184,8 +180,10 @@ const UserTable = () => {
                                 <Typography variant="h6" gutterBottom>
                                     Art Status Overview
                                 </Typography>
-                                <div style={{ minHeight: '250px', maxHeight: '250px', margin: '0 auto' }}>
-                                    <Bar data={barData} />
+                                <div className="d-flex">
+                                    <div style={{ minHeight: '270px', maxHeight: '250px', margin: '0 auto' }}>
+                                        <Bar tyle={{ margin: '0 auto' }} height={600} width={600} data={barData} />
+                                    </div>
                                 </div>
                             </Paper>
                         </Grid>
@@ -202,8 +200,8 @@ const UserTable = () => {
                                 <TableHead>
                                     <TableRow>
                                         <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>Employe</TableCell>
-                                        <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>CompletedArts</TableCell>
-                                        <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>ImprogressArt</TableCell>
+                                        <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>CompletedArtWorks</TableCell>
+                                        <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>ImprogressArtWorks</TableCell>
                                         <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>TotalArtWorks</TableCell>
                                     </TableRow>
                                 </TableHead>

@@ -67,7 +67,6 @@ const CreateArtPopup = ({ open, handleClose, user, updateArts }) => {
             <DialogContent sx={{ width: "500px" }}>
                 <Typography>Name *</Typography>
                 <TextField
-                    autoFocus
                     required
                     margin="dense"
                     id="name"
@@ -83,7 +82,6 @@ const CreateArtPopup = ({ open, handleClose, user, updateArts }) => {
                 />
                 <Typography className="mt-2">Description</Typography>
                 <TextField
-                    autoFocus
                     margin="dense"
                     id="name"
                     name="artDescription"

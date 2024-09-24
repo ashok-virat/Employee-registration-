@@ -130,6 +130,7 @@ const SignUp = () => {
                         </div>
                         <div className="pt-3 d-flex justify-content-start align-items-baseline">
                             <div><Button
+                                type="submit"
                                 variant="contained"
                                 className="text-center"
                                 onClick={handleSignUp}

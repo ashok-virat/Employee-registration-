@@ -78,7 +78,7 @@ const RegisterdUsers = () => {
                             <div className="col">
                                 <div className="d-flex justify-content-between">
                                     <span>Registerd Users</span>
-                                    <Button variant="outlined" onClick={() => {
+                                    <Button variant="contained" onClick={() => {
                                         navigate('/admin')
                                     }}>Dashboard </Button>
                                 </div>
