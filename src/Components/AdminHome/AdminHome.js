@@ -55,12 +55,9 @@ const UserTable = () => {
             const user = await UserService.getUserBasedArts()
             setLoading(false)
             setUserArts(user.data)
-            const inProgressCount = data.data.filter(art => art.status === 'inProgress').length;
-            const completedCount = data.data.filter(art => art.status === 'completed').length;
-
             setChartData({
-                inProgressCount,
-                completedCount,
+                inProgressCount: data.data.inProgressCount,
+                completedCount: data.data.completedCount,
             });
         }
         catch {
@@ -105,16 +102,14 @@ const UserTable = () => {
             setLoading(true)
             const data = await UserService.getAllArts(date[0], date[1])
             const user = await UserService.getUserBasedArts(date[0], date[1])
-            if (data?.data && Array.isArray(data.data)) {
+            if (data?.data && Array.isArray(user.data)) {
                 setArts(data.data)
                 setUserArts(user.data)
-                const inProgressCount = data.data.filter(art => art.status === 'inProgress').length;
-                const completedCount = data.data.filter(art => art.status === 'completed').length;
-
                 setChartData({
-                    inProgressCount,
-                    completedCount,
+                    inProgressCount: data.data.inProgressCount,
+                    completedCount: data.data.completedCount,
                 });
+
             }
             else {
                 setArts([])
@@ -200,7 +195,7 @@ const UserTable = () => {
             <div>
                 <div className="row">
                     <div className="col">
-                        {loading ? <div className="mt-5" style={{ textAlign: 'center' }}><CircularProgress size={24} sx={{
+                        {loading ? <div className="mt-5" style={{ textAlign: 'center' }}><CircularProgress size={35} sx={{
                             color: 'black',
                         }} /> </div> : <TableContainer component={Paper} sx={{ marginTop: '20px' }}>
                             <Table sx={{ minWidth: 650 }} aria-label="user table">

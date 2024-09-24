@@ -18,7 +18,6 @@ const signup = async (UserInfo) => {
 }
 
 const signin = async (UserInfo) => {
-    console.log(UserInfo)
     try {
         const data = await axios.post(`${API_BASE_URL}/login`, UserInfo)
         return data

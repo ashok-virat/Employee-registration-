@@ -57,9 +57,17 @@ const SignIn = () => {
                 onClose={handleClose}
             />
             <div className="row" style={{ height: "100vh" }}>
-                <div className="col" style={{ background: 'black' }}>
+                <div className="col d-flex flex-column justify-content-center align-items-center text-white position-relative" style={{ background: 'black', padding: '20px', overflow: 'hidden' }}>
+                    <h2 className="animate-heading">Welcome Back!</h2>
+                    <p className="text-center animate-description">
+                        Please log in to access your account and continue where you left off.
+                    </p>
 
-
+                    <div className="animated-shapes">
+                        <div className="shape"></div>
+                        <div className="shape"></div>
+                        <div className="shape"></div>
+                    </div>
                 </div>
                 <div className="col align-content-center col d-flex justify-content-center">
 
@@ -93,21 +101,22 @@ const SignIn = () => {
                                 />
                             </div>
                             <div className="pt-3 d-flex justify-content-start align-items-baseline">
-                                {loading ? <div style={{ width: "77px", textAlign: 'center' }}><CircularProgress size={24} sx={{
-                                    color: 'black',
-                                }} /> </div> : <Button
+                                <div>  <Button
                                     variant="contained"
                                     className="text-center"
                                     onClick={handleLogin}
                                 >
-                                    Login
-                                </Button>}
+                                    {loading ? <CircularProgress className="mx-2" size={24} sx={{
+                                        color: 'white',
+                                    }} /> : "Login"}
+                                </Button></div>
                                 <div>
                                     <span className="px-2">(or)</span>
                                     <label>
                                         Don't have account?{" "}
                                         <label
-                                            className="text-primary pointer"
+                                            className="text-primary"
+                                            style={{ cursor: 'pointer' }}
                                             onClick={() => {
                                                 navigate('/')
                                             }}

@@ -58,9 +58,17 @@ const SignUp = () => {
                 onClose={handleClose}
             />
             <div className="row" style={{ height: "100vh" }}>
-                <div className="col" style={{ background: 'black' }}>
+                <div className="col d-flex flex-column justify-content-center align-items-center text-white position-relative" style={{ background: 'black', padding: '20px', overflow: 'hidden' }}>
+                    <h2 className="animate-heading">Welcome to Employee Registration</h2>
+                    <p className="text-center animate-description">
+                        Join our team and help us create the future of work! Please fill out the form to register for your new role.
+                    </p>
 
-
+                    <div className="animated-shapes">
+                        <div className="shape"></div>
+                        <div className="shape"></div>
+                        <div className="shape"></div>
+                    </div>
                 </div>
                 <div className="signup-signin-wrapper align-content-center col d-flex justify-content-center">
                     <div className="signup-signin-child-wrapper">
@@ -121,22 +129,24 @@ const SignUp = () => {
                             />
                         </div>
                         <div className="pt-3 d-flex justify-content-start align-items-baseline">
-                            {loading ? <div style={{ width: "164px", textAlign: 'center' }}><CircularProgress size={24} sx={{
-                                color: 'black',
-                            }} /> </div> : <Button
+                            <div><Button
                                 variant="contained"
                                 className="text-center"
                                 onClick={handleSignUp}
                             >
-                                Create account
-                            </Button>}
+
+                                {loading ? <CircularProgress className="mx-5" size={24} sx={{
+                                    color: 'white',
+                                }} /> : "Create account"}
+                            </Button></div>
                             <div>
                                 <span className="px-2">(or)</span>
                                 <label>
                                     Already have account?{" "}
                                     <label
-                                        className="text-primary pointer"
+                                        className="text-primary"
                                         onClick={() => { navigate('/signin') }}
+                                        style={{ cursor: 'pointer' }}
                                     >
                                         Login
                                     </label>

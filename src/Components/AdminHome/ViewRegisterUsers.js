@@ -82,7 +82,11 @@ const RegisterdUsers = () => {
                                         navigate('/admin')
                                     }}>Dashboard </Button>
                                 </div>
-                                {loading ? <div style={{ textAlign: 'center' }}><CircularProgress size={24} sx={{
+                                {loading ? <div style={{
+                                    position: "absolute",
+                                    left: "50%",
+                                    top: "50%"
+                                }}><CircularProgress size={35} sx={{
                                     color: 'black',
                                 }} /> </div> : <TableContainer component={Paper} sx={{ marginTop: '20px' }}>
                                     <Table sx={{ minWidth: 650 }} aria-label="user table">

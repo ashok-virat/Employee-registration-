@@ -24,3 +24,57 @@
     -webkit-text-fill-color: transparent;
     -webkit-background-clip: text;
   }
+
+  .animate-heading {
+    font-size: 2rem;
+    animation: fadeIn 2s ease-in-out;
+}
+
+.animate-description {
+    animation: fadeIn 3s ease-in-out;
+}
+
+.animated-shapes .shape {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    animation: moveShape 8s infinite alternate ease-in-out;
+}
+
+.animated-shapes .shape:nth-child(1) {
+    top: -50px;
+    left: -50px;
+    animation-delay: 0s;
+}
+
+.animated-shapes .shape:nth-child(2) {
+    top: 50px;
+    right: -50px;
+    animation-delay: 2s;
+}
+
+.animated-shapes .shape:nth-child(3) {
+    bottom: -50px;
+    left: 50px;
+    animation-delay: 4s;
+}
+
+@keyframes moveShape {
+    0% {
+        transform: translateY(0) translateX(0) rotate(0deg);
+    }
+    100% {
+        transform: translateY(100px) translateX(100px) rotate(360deg);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
