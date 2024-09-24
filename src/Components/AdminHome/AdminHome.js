@@ -14,7 +14,7 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { useNavigate, } from "react-router-dom";
-import { Grid } from '@mui/material';
+import { Grid, CircularProgress, Chip } from '@mui/material';
 import { Pie, Bar } from 'react-chartjs-2';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { LocalizationProvider } from '@mui/x-date-pickers-pro/LocalizationProvider';
@@ -44,12 +44,16 @@ const UserTable = () => {
 
     const [userArts, setUserArts] = useState([])
 
+    const [loading, setLoading] = useState(false)
+
 
     const getArts = async () => {
         try {
+            setLoading(true)
             const data = await UserService.getAllArts()
             setArts(data.data)
             const user = await UserService.getUserBasedArts()
+            setLoading(false)
             setUserArts(user.data)
             const inProgressCount = data.data.filter(art => art.status === 'inProgress').length;
             const completedCount = data.data.filter(art => art.status === 'completed').length;
@@ -59,8 +63,8 @@ const UserTable = () => {
                 completedCount,
             });
         }
-        catch (e) {
-            console.log(e)
+        catch {
+            setLoading(false)
         }
     }
 
@@ -101,6 +105,7 @@ const UserTable = () => {
 
     const getArtsByDate = React.useCallback(async () => {
         try {
+            setLoading(true)
             const data = await UserService.getAllArts(date[0], date[1])
             const user = await UserService.getUserBasedArts(date[0], date[1])
             if (data?.data && Array.isArray(data.data)) {
@@ -122,9 +127,10 @@ const UserTable = () => {
                     completedCount: 0,
                 })
             }
+            setLoading(false)
         }
-        catch (e) {
-            console.log(e)
+        catch {
+            setLoading(false)
         }
     }, [date])
 
@@ -145,17 +151,19 @@ const UserTable = () => {
                         <Button variant="outlined" onClick={() => {
                             navigate('/user')
                         }} >View Registered Users</Button></div>
-                    <div className="justify-content-end d-flex pt-3">
-                        <span>
-                            <LocalizationProvider className="pt-0" dateAdapter={AdapterDayjs}>
-                                <DemoContainer components={['DateRangePicker']}>
-                                    <DateRangePicker onChange={(e) => {
-                                        if (e && e.length && e[1]) {
-                                            setDate(e)
-                                        }
-                                    }} localeText={{ start: 'From', end: 'To' }} />
-                                </DemoContainer>
-                            </LocalizationProvider></span></div>
+                    <div className="d-flex align-content-center pt-3">
+                        <LocalizationProvider className="pt-0" dateAdapter={AdapterDayjs}>
+                            <DemoContainer components={['DateRangePicker']}>
+                                <DateRangePicker onChange={(e) => {
+                                    if (e && e.length && e[1]) {
+                                        setDate(e)
+                                    }
+                                }} localeText={{ start: 'From', end: 'To' }} />
+                            </DemoContainer>
+                        </LocalizationProvider><div style={{ marginLeft: '10px' }} className="align-content-center"><Chip label="Clear" onClick={() => {
+                            setDate([])
+                            getArts()
+                        }} ></Chip></div> </div>
                     <Grid container spacing={3} className="mt-2">
                         {/* Pie Chart */}
                         <Grid item xs={12} md={6}>
@@ -186,7 +194,9 @@ const UserTable = () => {
             <div>
                 <div className="row">
                     <div className="col">
-                        <TableContainer component={Paper} sx={{ marginTop: '20px' }}>
+                        {loading ? <div className="mt-5" style={{ textAlign: 'center' }}><CircularProgress size={24} sx={{
+                            color: 'black',
+                        }} /> </div> : <TableContainer component={Paper} sx={{ marginTop: '20px' }}>
                             <Table sx={{ minWidth: 650 }} aria-label="user table">
                                 <TableHead>
                                     <TableRow>
@@ -215,7 +225,8 @@ const UserTable = () => {
                                     ))}
                                 </TableBody>
                             </Table>
-                        </TableContainer>
+                        </TableContainer>}
+
                     </div></div>
             </div>
         </div>
