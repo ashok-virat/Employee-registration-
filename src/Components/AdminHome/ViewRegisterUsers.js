@@ -8,18 +8,20 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import UserService from '../../Service/UserService'
 import { useEffect, useState } from 'react'
-import { Button } from "@mui/material";
+import { Button, CircularProgress } from "@mui/material";
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import { useNavigate, } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 
 const RegisterdUsers = () => {
     const [users, setUsers] = useState([]);
     const navigate = useNavigate();
     const [user, setUser] = useState({})
+
+    const [loading, setLaoding] = useState(false)
     useEffect(() => {
         const loggedInUser = localStorage.getItem('user')
         if (!loggedInUser) {
@@ -31,13 +33,15 @@ const RegisterdUsers = () => {
     }, [navigate])
 
     useEffect(() => {
+        setLaoding(true)
         UserService.getUsers().then(data => {
+            setLaoding(false)
             setUsers(data.data);
         }).catch(e => {
-            console.log(e);
+            setLaoding(false)
         });
         return (() => {
-            // localStorage.removeItem('user')
+            localStorage.removeItem('user')
         })
     }, []);
 
@@ -81,7 +85,9 @@ const RegisterdUsers = () => {
                                         navigate('/admin')
                                     }}>Dashboard </Button>
                                 </div>
-                                <TableContainer component={Paper} sx={{ marginTop: '20px' }}>
+                                {loading ? <div style={{ textAlign: 'center' }}><CircularProgress size={24} sx={{
+                                    color: 'black',
+                                }} /> </div> : <TableContainer component={Paper} sx={{ marginTop: '20px' }}>
                                     <Table sx={{ minWidth: 650 }} aria-label="user table">
                                         <TableHead>
                                             <TableRow>
@@ -119,7 +125,8 @@ const RegisterdUsers = () => {
                                             ))}
                                         </TableBody>
                                     </Table>
-                                </TableContainer>
+                                </TableContainer>}
+
                             </div>
                         </div>
                     </div>

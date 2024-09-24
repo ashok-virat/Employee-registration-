@@ -1,4 +1,4 @@
-import { Button, Checkbox, FormControlLabel, CircularProgress } from "@mui/material";
+import { Button, Checkbox, FormControlLabel, CircularProgress, Snackbar } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import "./admin.css";
 import { useRef, useState } from "react";
@@ -16,6 +16,8 @@ const SignUp = () => {
     const userPass = useRef("");
     const [loading, setLoading] = useState(false)
 
+    const [error, setError] = useState(false)
+
     const handleSignUp = async () => {
         let employee = {
             userName: userName.current.value,
@@ -31,12 +33,28 @@ const SignUp = () => {
             navigate('/signin')
         }
         catch {
+            setError(true)
             setLoading(false)
         }
     };
 
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setError(false)
+    };
+
+
     return (
         <div className="container-fluid">
+            <Snackbar
+                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+                open={error}
+                autoHideDuration={3000}
+                message="Invalid data"
+                onClose={handleClose}
+            />
             <div className="row" style={{ height: "100vh" }}>
                 <div className="col" style={{ background: 'black' }}>
 

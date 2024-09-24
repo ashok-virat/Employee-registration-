@@ -14,7 +14,7 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { useNavigate, } from "react-router-dom";
-import { Grid, CircularProgress, Chip } from '@mui/material';
+import { Grid, CircularProgress, Chip, SvgIcon } from '@mui/material';
 import { Pie, Bar } from 'react-chartjs-2';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { LocalizationProvider } from '@mui/x-date-pickers-pro/LocalizationProvider';
@@ -97,7 +97,7 @@ const UserTable = () => {
     useEffect(() => {
         getArts()
         return (() => {
-            // localStorage.removeItem('user')
+            localStorage.removeItem('user')
         })
     }, []);
 
@@ -140,21 +140,22 @@ const UserTable = () => {
         }
     }, [date, getArtsByDate])
 
+
     return (
         <div className="container-fluid">
             <div className="row">
                 <div className="col">
                     <div className="d-flex justify-content-between mt-2">    <span>
                         <Typography variant="h6" gutterBottom>
-                            Dashboard - {arts.length}
+                            Dashboard - <span style={{ fontWeight: 900 }}>Total artworks {arts.length}</span>
                         </Typography></span>
                         <Button variant="outlined" onClick={() => {
                             navigate('/user')
                         }} >View Registered Users</Button></div>
                     <div className="d-flex align-content-center pt-3">
                         <LocalizationProvider className="pt-0" dateAdapter={AdapterDayjs}>
-                            <DemoContainer components={['DateRangePicker']}>
-                                <DateRangePicker onChange={(e) => {
+                            <DemoContainer value={date} components={['DateRangePicker']}>
+                                <DateRangePicker value={date} onChange={(e) => {
                                     if (e && e.length && e[1]) {
                                         setDate(e)
                                     }
@@ -163,7 +164,15 @@ const UserTable = () => {
                         </LocalizationProvider><div style={{ marginLeft: '10px' }} className="align-content-center"><Chip label="Clear" onClick={() => {
                             setDate([])
                             getArts()
-                        }} ></Chip></div> </div>
+                            setDate(null)
+                        }} ></Chip><SvgIcon style={{ marginLeft: '10px' }} onClick={() => {
+                            if (date) {
+                                getArtsByDate()
+                            }
+                            else {
+                                getArts()
+                            }
+                        }} ><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M17.65 6.35A7.96 7.96 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4z" /></svg></SvgIcon></div> </div>
                     <Grid container spacing={3} className="mt-2">
                         {/* Pie Chart */}
                         <Grid item xs={12} md={6}>

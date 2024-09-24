@@ -1,4 +1,4 @@
-import { Button, Checkbox, FormControlLabel, TextField, CircularProgress } from "@mui/material";
+import { Button, Checkbox, FormControlLabel, TextField, CircularProgress, Snackbar } from "@mui/material";
 import { useRef, useState } from "react";
 import useToggle from "./useToggle";
 import { useNavigate } from "react-router-dom";
@@ -11,6 +11,8 @@ const SignIn = () => {
     const { status: isShowPass, toggleStatus: toggleShow } = useToggle();
 
     const [loading, setLoading] = useState(false)
+
+    const [error, setError] = useState(false)
 
 
     const userName = useRef("");
@@ -30,12 +32,27 @@ const SignIn = () => {
             setLoading(false)
         }
         catch {
+            setError(true)
             setLoading(false)
         }
     };
 
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setError(false)
+    };
+
     return (
         <div className="container-fluid">
+            <Snackbar
+                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+                open={error}
+                autoHideDuration={3000}
+                message="Invalid username/password"
+                onClose={handleClose}
+            />
             <div className="row" style={{ height: "100vh" }}>
                 <div className="col" style={{ background: 'black' }}>
 
@@ -51,7 +68,7 @@ const SignIn = () => {
                                 <TextField
                                     required
                                     id="username-text-field"
-                                    placeholder="Username"
+                                    placeholder="Email"
                                     inputRef={userName}
                                 />
                             </div>

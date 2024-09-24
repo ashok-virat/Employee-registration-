@@ -187,6 +187,9 @@ const HomePage = () => {
         else {
             setUser(JSON.parse(loggedInUser))
         }
+        return (() => {
+            localStorage.removeItem('user')
+        })
     }, [navigate])
 
     const [arts, setArts] = useState([])
