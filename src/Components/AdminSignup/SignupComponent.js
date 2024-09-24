@@ -42,7 +42,7 @@ const SignUp = () => {
                 <div className="signup-signin-wrapper align-content-center col d-flex justify-content-center">
                     <div className="signup-signin-child-wrapper">
                         <h2 className="text-center">Register</h2>
-                        <div className="first_last_name_wrapper mb-3">
+                        <div className="first_last_name_wrapper mb-3 mt-3">
                             <div className="d-flex flex-column">
                                 <label className="text-start pb-2">First Name *</label>
                                 <TextField

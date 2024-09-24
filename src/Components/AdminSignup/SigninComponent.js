@@ -1,5 +1,5 @@
 import { Button, Checkbox, FormControlLabel, TextField } from "@mui/material";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import useToggle from "./useToggle";
 import { useNavigate } from "react-router-dom";
 import UserService from './../../Service/UserService'
@@ -10,12 +10,15 @@ const SignIn = () => {
 
     const { status: isShowPass, toggleStatus: toggleShow } = useToggle();
 
+    const [loading, setLoading] = useState(false)
+
 
     const userName = useRef("");
     const userPass = useRef("");
 
     const handleLogin = async () => {
         try {
+            setLoading(true)
             const { data } = await UserService.signin({ email: userName.current.value, password: userPass.current.value })
             localStorage.setItem('user', JSON.stringify(data))
             if (data?.userType === 'admin') {
@@ -24,9 +27,10 @@ const SignIn = () => {
             else {
                 navigate('/employe')
             }
+            setLoading(false)
         }
-        catch (e) {
-            console.log(e)
+        catch {
+            setLoading(false)
         }
     };
 
