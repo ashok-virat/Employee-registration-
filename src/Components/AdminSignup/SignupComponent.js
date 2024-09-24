@@ -1,7 +1,7 @@
-import { Button, Checkbox, FormControlLabel } from "@mui/material";
+import { Button, Checkbox, FormControlLabel, CircularProgress } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import "./admin.css";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import useToggle from './useToggle'
 import { useNavigate } from "react-router-dom";
 import UserService from './../../Service/UserService'
@@ -14,6 +14,7 @@ const SignUp = () => {
     const userEmailId = useRef("");
     const userName = useRef("");
     const userPass = useRef("");
+    const [loading, setLoading] = useState(false)
 
     const handleSignUp = async () => {
         let employee = {
@@ -24,11 +25,13 @@ const SignUp = () => {
             password: userPass.current.value
         }
         try {
+            setLoading(true)
             await UserService.signup(employee)
+            setLoading(false)
             navigate('/signin')
         }
-        catch (e) {
-            console.log(e)
+        catch {
+            setLoading(false)
         }
     };
 
@@ -98,13 +101,15 @@ const SignUp = () => {
                             />
                         </div>
                         <div className="pt-3 d-flex justify-content-start align-items-baseline">
-                            <Button
+                            {loading ? <div style={{ width: "164px", textAlign: 'center' }}><CircularProgress size={24} sx={{
+                                color: 'black',
+                            }} /> </div> : <Button
                                 variant="contained"
                                 className="text-center"
                                 onClick={handleSignUp}
                             >
                                 Create account
-                            </Button>
+                            </Button>}
                             <div>
                                 <span className="px-2">(or)</span>
                                 <label>

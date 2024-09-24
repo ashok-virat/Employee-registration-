@@ -1,4 +1,4 @@
-import { Button, Checkbox, FormControlLabel, TextField } from "@mui/material";
+import { Button, Checkbox, FormControlLabel, TextField, CircularProgress } from "@mui/material";
 import { useRef, useState } from "react";
 import useToggle from "./useToggle";
 import { useNavigate } from "react-router-dom";
@@ -73,13 +73,15 @@ const SignIn = () => {
                                 />
                             </div>
                             <div className="pt-3 d-flex justify-content-start align-items-baseline">
-                                <Button
+                                {loading ? <div style={{ width: "77px", textAlign: 'center' }}><CircularProgress size={24} sx={{
+                                    color: 'black',
+                                }} /> </div> : <Button
                                     variant="contained"
                                     className="text-center"
                                     onClick={handleLogin}
                                 >
                                     Login
-                                </Button>
+                                </Button>}
                                 <div>
                                     <span className="px-2">(or)</span>
                                     <label>
