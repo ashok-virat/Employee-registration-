@@ -47,7 +47,7 @@ const SignIn = () => {
                         <div className="signup-signin-child-wrapper">
                             <h2 className="text-center">Login</h2>
                             <div className="d-flex flex-column">
-                                <label className="text-start pb-2">Username *</label>
+                                <label className="text-start pb-2">Email *</label>
                                 <TextField
                                     required
                                     id="username-text-field"
