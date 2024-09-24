@@ -24,8 +24,9 @@ const SignIn = () => {
         try {
             setLoading(true)
             const { data } = await UserService.signin({ email: userName.current.value, password: userPass.current.value })
-            localStorage.setItem('user', JSON.stringify(data))
-            if (data?.userType === 'admin') {
+            localStorage.setItem('user', JSON.stringify(data.user))
+            localStorage.setItem('token', data.token)
+            if (data?.user?.userType === 'admin') {
                 navigate('/admin')
             }
             else {

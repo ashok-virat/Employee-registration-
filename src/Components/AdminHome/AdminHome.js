@@ -14,13 +14,17 @@ const AdminHomePage = () => {
     const [user, setUser] = useState({})
     useEffect(() => {
         const loggedInUser = localStorage.getItem('user')
-        if (!loggedInUser) {
-            navigate('/signin')
-        }
-        else {
+        if (loggedInUser) {
             setUser(JSON.parse(loggedInUser))
         }
-    }, [navigate])
+    }, [])
+
+    const logout = () => {
+        localStorage.removeItem('user')
+        localStorage.removeItem('token')
+        navigate('/signin')
+    }
+
     return (
         <>
             <Box sx={{ flexGrow: 1 }} style={{ position: 'sticky', top: 0, zIndex: 1100 }}>
@@ -30,7 +34,8 @@ const AdminHomePage = () => {
                             Admin Panel - {user?.userName}
                         </Typography>
                         <Button color="inherit" onClick={() => {
-                            navigate('/signin')
+                            logout()
+
                         }}>LogOut</Button>
                     </Toolbar>
                 </AppBar>

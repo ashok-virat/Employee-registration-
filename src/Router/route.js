@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import { lazy, Suspense } from 'react'
 import { Spinner } from 'reactstrap'
 
@@ -7,6 +7,18 @@ const Signin = lazy(() => import('../Components/AdminSignup/SigninComponent'))
 const EmployerHome = lazy(() => import('../Components/Employer/EmployerHome'))
 const AdminHomePage = lazy(() => import('../Components/AdminHome/AdminHome'))
 const RegisteredUserPage = lazy(() => import('../Components/AdminHome/ViewRegisterUsers'))
+
+
+const ProtectedRoute = ({ children }) => {
+    const isAuthenticated = localStorage.getItem("token");
+
+    if (!isAuthenticated) {
+        return <Navigate to="/signin" />;
+    }
+
+    return children;
+};
+
 
 const RouteComponent = () => {
 
@@ -21,9 +33,33 @@ const RouteComponent = () => {
                 <Routes>
                     <Route exact path="/" element={<Signup />} />
                     <Route exact path="/signin" element={<Signin />} />
-                    <Route exact path="/employe" element={<EmployerHome />} />
-                    <Route exact path="/admin" element={< AdminHomePage />} />
-                    <Route exact path="/user" element={< RegisteredUserPage />} />
+                    <Route
+                        exact
+                        path="/employe"
+                        element={
+                            <ProtectedRoute>
+                                <EmployerHome />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        exact
+                        path="/admin"
+                        element={
+                            <ProtectedRoute>
+                                <AdminHomePage />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        exact
+                        path="/user"
+                        element={
+                            <ProtectedRoute>
+                                <RegisteredUserPage />
+                            </ProtectedRoute>
+                        }
+                    />
                 </Routes>
             </Suspense>
         </Router>
