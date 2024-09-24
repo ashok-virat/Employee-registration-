@@ -96,9 +96,6 @@ const UserTable = () => {
 
     useEffect(() => {
         getArts()
-        return (() => {
-            localStorage.removeItem('user')
-        })
     }, []);
 
     const [date, setDate] = useState(null)

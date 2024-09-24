@@ -40,9 +40,6 @@ const RegisterdUsers = () => {
         }).catch(e => {
             setLaoding(false)
         });
-        return (() => {
-            localStorage.removeItem('user')
-        })
     }, []);
 
     const approveUser = async (user) => {
