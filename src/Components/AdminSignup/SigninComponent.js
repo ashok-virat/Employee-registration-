@@ -14,6 +14,8 @@ const SignIn = () => {
 
     const [error, setError] = useState(false)
 
+    const [errorMessage, setErrorMessage] = useState('')
+
 
     const userName = useRef("");
     const userPass = useRef("");
@@ -31,7 +33,8 @@ const SignIn = () => {
             }
             setLoading(false)
         }
-        catch {
+        catch (e) {
+            setErrorMessage(e.response.data)
             setError(true)
             setLoading(false)
         }
@@ -50,7 +53,7 @@ const SignIn = () => {
                 anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
                 open={error}
                 autoHideDuration={3000}
-                message="Invalid username/password"
+                message={errorMessage ? errorMessage : "Invalid username/password"}
                 onClose={handleClose}
             />
             <div className="row" style={{ height: "100vh" }}>

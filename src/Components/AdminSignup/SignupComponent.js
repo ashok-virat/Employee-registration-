@@ -24,7 +24,9 @@ const SignUp = () => {
             email: userEmailId.current.value,
             userType: 'employe',
             isApproved: false,
-            password: userPass.current.value
+            password: userPass.current.value,
+            firstName: userFirstName.current.value,
+            lastName: userLastName.current.value
         }
         try {
             setLoading(true)
