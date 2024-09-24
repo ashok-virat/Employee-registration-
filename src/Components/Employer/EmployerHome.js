@@ -11,7 +11,8 @@ import {
     DialogTitle,
     TextField,
     Typography,
-    Chip
+    Chip,
+    CircularProgress
 } from "@mui/material";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -19,24 +20,19 @@ import UserService from "../../Service/UserService";
 import moment from 'moment-timezone';
 
 
-const BasicTable = ({ user }) => {
-    const [arts, setArts] = useState([])
-    useEffect(() => {
-        UserService.getArts(user._id).then(data => {
-            console.log(data)
-            setArts(data.data)
-        }).catch(e => {
-            console.log(e)
-        })
-    }, [user])
+const BasicTable = ({ arts, updateArt }) => {
+
+    const [loading, setLoading] = useState(false)
 
     const completeArt = async (art) => {
         try {
+            setLoading(art._id)
             const data = await UserService.completeArt(art._id)
-            console.log(data)
+            setLoading(false)
+            updateArt(data)
         }
-        catch (e) {
-            console.log(e)
+        catch {
+            setLoading(false)
         }
     }
 
@@ -67,7 +63,9 @@ const BasicTable = ({ user }) => {
                             </Typography>
                             <hr></hr>
                             <div className="mt-3">
-                                {art.status === 'inProgress' ? <Chip color="primary" label="Complete the Art work" onClick={() => {
+                                {art.status === 'inProgress' ? loading === art._id ? <CircularProgress size={24} sx={{
+                                    color: 'black',
+                                }} /> : <Chip color="primary" label="Complete the Art work" onClick={() => {
                                     completeArt(art)
                                 }} /> : <Chip color="success" label="Art work Completed" />}
                             </div>
@@ -80,11 +78,13 @@ const BasicTable = ({ user }) => {
     );
 };
 
-const CreateArtPopup = ({ open, handleClose, user }) => {
+const CreateArtPopup = ({ open, handleClose, user, updateArts }) => {
     const [art, setArt] = useState({
         artName: '',
         artDescription: ''
     })
+
+    const [loading, setLoading] = useState(false)
 
     const handleArt = (e) => {
         e.preventDefault();
@@ -95,9 +95,16 @@ const CreateArtPopup = ({ open, handleClose, user }) => {
     const createArt = async (event) => {
         event.preventDefault();
         try {
-            await UserService.createArt(
+            setLoading(true)
+            const { data } = await UserService.createArt(
                 { artName: art.artName, description: art.artDescription, status: 'inProgress', createdBy: user?._id, ownerName: user.userName })
+            setLoading(false)
+            setArt({
+                artName: '',
+                artDescription: ''
+            })
             handleClose();
+            updateArts(data)
         }
         catch (e) {
             console.log(e)
@@ -152,8 +159,10 @@ const CreateArtPopup = ({ open, handleClose, user }) => {
             </DialogContent>
             <DialogActions>
                 <Button onClick={() => handleClose()}>Cancel</Button>
-                <Button type="submit" variant="contained">
-                    Create
+                <Button disabled={loading} type="submit" variant="contained">
+                    {loading ? <CircularProgress size={24} sx={{
+                        color: 'black',
+                    }} /> : "Create"}
                 </Button>
             </DialogActions>
         </Dialog>
@@ -179,10 +188,37 @@ const HomePage = () => {
             setUser(JSON.parse(loggedInUser))
         }
     }, [navigate])
+
+    const [arts, setArts] = useState([])
+
+    const updateArts = ({ art }) => {
+        setArts(prev => [art, ...prev])
+    }
+
+    const updateArt = ({ data }) => {
+        if (data?.updatedArt?._id) {
+            setArts((prevArts) =>
+                prevArts.map((art) =>
+                    art._id === data.updatedArt._id ? data.updatedArt : art
+                )
+            );
+        }
+    }
+
+    useEffect(() => {
+        if (user?._id) {
+            UserService.getArts(user._id).then(data => {
+                setArts(data.data)
+            }).catch(e => {
+                console.log(e)
+            })
+        }
+    }, [user])
+
     return (<>
-        <Box sx={{ flexGrow: 1 }}>
+        <Box sx={{ flexGrow: 1 }} style={{ position: 'sticky', top: 0, zIndex: 1100 }}>
             <AppBar position="static">
-                <Toolbar>
+                <Toolbar style={{ background: 'black' }}>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                         Employee - {user?.userName}
                     </Typography>
@@ -205,9 +241,9 @@ const HomePage = () => {
                         </Button>
                     </div>
                 </div>
-                <BasicTable user={user} />
+                <BasicTable user={user} arts={arts} updateArt={updateArt} />
             </div>
-            <CreateArtPopup open={isPopUpOpen} handleClose={handleClose} user={user} />
+            <CreateArtPopup open={isPopUpOpen} handleClose={handleClose} user={user} updateArts={updateArts} />
         </div>
     </>
 

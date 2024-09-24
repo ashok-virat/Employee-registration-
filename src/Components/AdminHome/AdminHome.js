@@ -101,6 +101,13 @@ const UserTable = () => {
         try {
             const data = await UserService.getAllArts(date[0], date[1])
             setArts(data.data)
+            const inProgressCount = data.data.filter(art => art.status === 'inProgress').length;
+            const completedCount = data.data.filter(art => art.status === 'completed').length;
+
+            setChartData({
+                inProgressCount,
+                completedCount,
+            });
         }
         catch (e) {
             console.log(e)
@@ -230,9 +237,9 @@ const AdminHomePage = () => {
     }, [navigate])
     return (
         <>
-            <Box sx={{ flexGrow: 1 }}>
+            <Box sx={{ flexGrow: 1 }} style={{ position: 'sticky', top: 0, zIndex: 1100 }}>
                 <AppBar position="static">
-                    <Toolbar>
+                    <Toolbar style={{ background: 'black' }}>
                         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                             Admin Panel - {user?.userName}
                         </Typography>

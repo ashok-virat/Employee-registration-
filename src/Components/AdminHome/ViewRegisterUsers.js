@@ -43,7 +43,12 @@ const RegisterdUsers = () => {
 
     const approveUser = async (user) => {
         try {
-            const data = await UserService.approveUser({ id: user._id })
+            const { data } = await UserService.approveUser({ id: user._id })
+            setUsers((prevUsers) =>
+                prevUsers.map((user) =>
+                    user._id === data.user._id ? data.user : user
+                )
+            );
             console.log(data)
         }
         catch (e) {
@@ -53,9 +58,9 @@ const RegisterdUsers = () => {
 
     return (
         <>
-            <Box sx={{ flexGrow: 1 }}>
+            <Box sx={{ flexGrow: 1 }} style={{ position: 'sticky', top: 0, zIndex: 1100 }}>
                 <AppBar position="static">
-                    <Toolbar>
+                    <Toolbar style={{ background: 'black' }}>
                         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                             Admin Panel - {user?.userName}
                         </Typography>
