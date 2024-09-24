@@ -14,7 +14,6 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { useNavigate, } from "react-router-dom";
-import moment from 'moment-timezone';
 import { Grid } from '@mui/material';
 import { Pie, Bar } from 'react-chartjs-2';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
@@ -43,12 +42,15 @@ const UserTable = () => {
         completedCount: 0,
     });
 
+    const [userArts, setUserArts] = useState([])
+
 
     const getArts = async () => {
         try {
             const data = await UserService.getAllArts()
             setArts(data.data)
-
+            const user = await UserService.getUserBasedArts()
+            setUserArts(user.data)
             const inProgressCount = data.data.filter(art => art.status === 'inProgress').length;
             const completedCount = data.data.filter(art => art.status === 'completed').length;
 
@@ -100,14 +102,26 @@ const UserTable = () => {
     const getArtsByDate = React.useCallback(async () => {
         try {
             const data = await UserService.getAllArts(date[0], date[1])
-            setArts(data.data)
-            const inProgressCount = data.data.filter(art => art.status === 'inProgress').length;
-            const completedCount = data.data.filter(art => art.status === 'completed').length;
+            const user = await UserService.getUserBasedArts(date[0], date[1])
+            if (data?.data && Array.isArray(data.data)) {
+                setArts(data.data)
+                setUserArts(user.data)
+                const inProgressCount = data.data.filter(art => art.status === 'inProgress').length;
+                const completedCount = data.data.filter(art => art.status === 'completed').length;
 
-            setChartData({
-                inProgressCount,
-                completedCount,
-            });
+                setChartData({
+                    inProgressCount,
+                    completedCount,
+                });
+            }
+            else {
+                setArts([])
+                setUserArts([])
+                setChartData({
+                    inProgressCount: 0,
+                    completedCount: 0,
+                })
+            }
         }
         catch (e) {
             console.log(e)
@@ -176,41 +190,26 @@ const UserTable = () => {
                             <Table sx={{ minWidth: 650 }} aria-label="user table">
                                 <TableHead>
                                     <TableRow>
-                                        <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>Art name</TableCell>
-                                        <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>Description</TableCell>
-                                        <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>Employee</TableCell>
-                                        <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>CreatedOn</TableCell>
-                                        <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>Completed</TableCell>
-                                        <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>Status</TableCell>
-                                        <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>Duration</TableCell>
+                                        <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>Employe</TableCell>
+                                        <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>CompletedArts</TableCell>
+                                        <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>ImprogressArt</TableCell>
+                                        <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>TotalArtWorks</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {arts.map((row) => (
+                                    {userArts.map((row) => (
                                         <TableRow key={row._id} hover sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
                                             <TableCell component="th" scope="row" sx={{ textAlign: 'center' }}>
-                                                {row.artName}
-                                            </TableCell>
-                                            <TableCell sx={{ textAlign: 'center' }}>{row.description}</TableCell>
-                                            <TableCell sx={{ textAlign: 'center' }}>
                                                 {row.ownerName}
                                             </TableCell>
-                                            <TableCell component="th" scope="row" sx={{ textAlign: 'center' }}>
-                                                {moment(row.createdOn).tz('Asia/Kolkata').format('MMMM Do YYYY, h:mm:ss A')}
+                                            <TableCell sx={{ textAlign: 'center' }}>
+                                                <span style={{ color: "green" }}>  {row.completedArts} </span>
                                             </TableCell>
-                                            <TableCell component="th" scope="row" sx={{ textAlign: 'center' }}>
-                                                {row?.completedOn ? moment(row.completedOn).tz('Asia/Kolkata').format('MMMM Do YYYY, h:mm:ss A') : "-"}
+                                            <TableCell sx={{ textAlign: 'center' }}>
+                                                <span style={{ color: "blue" }}>   {row.inProgressArts} </span>
                                             </TableCell>
-                                            <TableCell sx={{ textAlign: 'center', color: row.status === 'completed' ? 'green' : 'red' }}>
-                                                {row.status}
-                                            </TableCell>
-                                            <TableCell component="th" scope="row" sx={{ textAlign: 'center' }}>
-                                                {row.timeTaken ? <p className="pt-2">
-                                                    {row?.timeTaken?.days > 0 && ` ${row.timeTaken.days} day(s),`}
-                                                    {row?.timeTaken?.hours > 0 && ` ${row.timeTaken.hours} hour(s),`}
-                                                    {row?.timeTaken?.minutes > 0 && ` ${row.timeTaken.minutes} minute(s),`}
-                                                    {row?.timeTaken?.seconds > 0 && ` ${row.timeTaken.seconds} second(s)`}
-                                                </p> : "-"}
+                                            <TableCell sx={{ textAlign: 'center' }}>
+                                                {row.totalArts}
                                             </TableCell>
                                         </TableRow>
                                     ))}

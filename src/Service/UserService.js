@@ -94,6 +94,23 @@ const getAllArts = async (startDate = null, endDate = null) => {
     }
 }
 
-const UserService = { signup, signin, getUsers, approveUser, createArt, getArts, completeArt, getAllArts }
+
+const getUserBasedArts = async (startDate = null, endDate = null) => {
+    try {
+        let url = `${API_BASE_URL}/alluserlevelarts`;
+
+        if (startDate && endDate) {
+            url += `?fromDate=${encodeURIComponent(startDate)}&toDate=${encodeURIComponent(endDate)}`;
+        }
+
+        const data = await axios.get(url);
+        return data
+    }
+    catch (e) {
+        throw e
+    }
+}
+
+const UserService = { signup, signin, getUsers, approveUser, createArt, getArts, completeArt, getAllArts, getUserBasedArts }
 
 export default UserService
