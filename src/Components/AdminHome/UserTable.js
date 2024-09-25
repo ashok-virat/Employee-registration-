@@ -61,6 +61,7 @@ const UserTable = () => {
 
     const labels = userArts.map(item => item.ownerName);
 
+    console.log(chartData)
     const pieData = {
         labels: ['In Progress', 'Completed'],
         datasets: [
