@@ -38,7 +38,7 @@
     position: absolute;
     width: 100px;
     height: 100px;
-    background: #fcfcfc;
+    background:#413f3f;
     border-radius: 50%;
     animation: moveShape 8s infinite alternate ease-in-out;
 }
