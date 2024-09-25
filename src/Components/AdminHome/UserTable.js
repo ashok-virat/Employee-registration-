@@ -148,7 +148,7 @@ const UserTable = () => {
                 <div className="col">
                     <div className="d-flex justify-content-between mt-2">    <span>
                         <Typography variant="h6" gutterBottom>
-                            Dashboard - <span style={{ fontWeight: 900 }}>Total artworks {chartData.inProgressCount + chartData.completedCount}</span>
+                            <span style={{ fontWeight: 900 }}>Arts -  {chartData.inProgressCount + chartData.completedCount}</span>
                         </Typography></span>
                         <Button variant="contained" onClick={() => {
                             navigate('/user')
@@ -166,19 +166,25 @@ const UserTable = () => {
                             setDate([])
                             getArts()
                             setDate(null)
-                        }} ></Chip><SvgIcon style={{ marginLeft: '10px', cursor: 'pointer' }} onClick={() => {
+                        }} ></Chip> </div> </div>
+                    <div className="d-flex justify-content-end">
+                        <SvgIcon style={{ marginLeft: '10px', cursor: 'pointer' }} onClick={() => {
                             if (date) {
                                 getArtsByDate()
                             }
                             else {
                                 getArts()
                             }
-                        }} ><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M17.65 6.35A7.96 7.96 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4z" /></svg></SvgIcon></div> </div>
+                        }} ><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M17.65 6.35A7.96 7.96 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4z" />
+                            </svg></SvgIcon></div>
                     <Grid container spacing={3} className="mt-2">
                         <Grid item xs={12} md={6}>
                             <Paper elevation={3} sx={{ padding: 2 }}>
-                                <Typography variant="h6" gutterBottom>
-                                    Overview
+                                <Typography style={{
+                                    fontFamily: "ui-monospace",
+                                    fontWeight: 600
+                                }} variant="h6" gutterBottom>
+                                    Overall arts
                                 </Typography>
                                 <div style={{ maxHeight: '270px', margin: '0 auto', }}>
                                     <Pie style={{ margin: '0 auto' }} data={pieData} />
@@ -188,8 +194,11 @@ const UserTable = () => {
 
                         <Grid item xs={12} md={6}>
                             <Paper elevation={3} sx={{ padding: 2 }}>
-                                <Typography variant="h6" gutterBottom>
-                                    User Level Overview
+                                <Typography style={{
+                                    fontFamily: "ui-monospace",
+                                    fontWeight: 600
+                                }} variant="h6" gutterBottom>
+                                    User level arts
                                 </Typography>
                                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '270px', maxHeight: '250px' }}>
                                     <Bar data={barData} />
@@ -209,10 +218,10 @@ const UserTable = () => {
                                 <TableHead>
                                     <TableRow>
                                         <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>Employe</TableCell>
-                                        <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>CompletedArtWorks</TableCell>
-                                        <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>ImprogressArtWorks</TableCell>
-                                        <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>TotalArtWorks</TableCell>
-                                        <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>TotalWorkingHours</TableCell>
+                                        <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>Completed art works</TableCell>
+                                        <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>Inprogress art works</TableCell>
+                                        <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>Total art works</TableCell>
+                                        <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>Total working hours</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
