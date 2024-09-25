@@ -14,11 +14,33 @@ const SignUp = () => {
     const userEmailId = useRef("");
     const userName = useRef("");
     const userPass = useRef("");
+    const [errors, setErrors] = useState({});
+
     const [loading, setLoading] = useState(false)
 
     const [error, setError] = useState(false)
 
+    const validateForm = () => {
+        const newErrors = {};
+        newErrors.firstName = !userFirstName.current.value ? "First name is required" : "";
+        newErrors.lastName = !userLastName.current.value ? "Last name is required" : "";
+        newErrors.email = !userEmailId.current.value ? "Email is required" : "";
+        newErrors.username = !userName.current.value ? "Username is required" : "";
+        newErrors.password = !userPass.current.value
+            ? "Password is required" || ""
+            : userPass.current.value.length < 6
+                ? "Password must be at least 6 characters" || ""
+                : "";
+        setErrors(newErrors);
+        return Object.values(newErrors).every(value => value === '' || value === null || value === undefined)
+    };
+
     const handleSignUp = async () => {
+        const validationErrors = validateForm();
+        if (!validationErrors) {
+            return;
+        }
+
         let employee = {
             userName: userName.current.value,
             email: userEmailId.current.value,
@@ -81,6 +103,11 @@ const SignUp = () => {
                                     id="first-name-text-field"
                                     placeholder="First name"
                                     inputRef={userFirstName}
+                                    error={!!errors.firstName}
+                                    helperText={errors.firstName}
+                                    onChange={() => {
+                                        validateForm()
+                                    }}
                                 />
                             </div>
                             <div className="d-flex flex-column">
@@ -90,6 +117,11 @@ const SignUp = () => {
                                     id="last-name-text-field"
                                     placeholder="Last name"
                                     inputRef={userLastName}
+                                    error={!!errors.lastName}
+                                    helperText={errors.lastName}
+                                    onChange={() => {
+                                        validateForm()
+                                    }}
                                 />
                             </div>
                         </div>
@@ -100,6 +132,11 @@ const SignUp = () => {
                                 id="email-text-field"
                                 placeholder="Email id"
                                 inputRef={userEmailId}
+                                error={!!errors.email}
+                                helperText={errors.email}
+                                onChange={() => {
+                                    validateForm()
+                                }}
                             />
                         </div>
                         <div className="d-flex flex-column mb-3">
@@ -109,19 +146,27 @@ const SignUp = () => {
                                 id="username-text-field"
                                 placeholder="Username"
                                 inputRef={userName}
+                                error={!!errors.username}
+                                helperText={errors.username}
+                                onChange={() => {
+                                    validateForm()
+                                }}
                             />
                         </div>
                         <div className="d-flex flex-column mb-3">
-                            <>
-                                <label className="text-start pb-2">Password *</label>
-                                <TextField
-                                    required
-                                    id="p-text-field"
-                                    placeholder="Password"
-                                    type={isShowPass ? "text" : "password"}
-                                    inputRef={userPass}
-                                />
-                            </>
+                            <label className="text-start pb-2">Password *</label>
+                            <TextField
+                                required
+                                id="p-text-field"
+                                placeholder="Password"
+                                type={isShowPass ? "text" : "password"}
+                                inputRef={userPass}
+                                error={!!errors.password}
+                                helperText={errors.password}
+                                onChange={() => {
+                                    validateForm()
+                                }}
+                            />
                             <FormControlLabel
                                 control={<Checkbox checked={isShowPass} size="small" />}
                                 label="Show password"
@@ -129,21 +174,20 @@ const SignUp = () => {
                             />
                         </div>
                         <div className="pt-3 d-flex justify-content-start align-items-baseline">
-                            <div><Button
-                                type="submit"
-                                variant="contained"
-                                className="text-center"
-                                onClick={handleSignUp}
-                            >
-
-                                {loading ? <CircularProgress className="mx-5" size={24} sx={{
-                                    color: 'white',
-                                }} /> : "Create account"}
-                            </Button></div>
+                            <div>
+                                <Button
+                                    type="submit"
+                                    variant="contained"
+                                    className="text-center"
+                                    onClick={handleSignUp}
+                                >
+                                    {loading ? <CircularProgress className="mx-5" size={24} sx={{ color: 'white' }} /> : "Create account"}
+                                </Button>
+                            </div>
                             <div>
                                 <span className="px-2">(or)</span>
                                 <label>
-                                    Already have account?{" "}
+                                    Already have an account?{" "}
                                     <label
                                         className="text-primary"
                                         onClick={() => { navigate('/signin') }}

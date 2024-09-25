@@ -16,12 +16,30 @@ const SignIn = () => {
 
     const [errorMessage, setErrorMessage] = useState('')
 
+    const [errors, setErrors] = useState({});
+
 
     const userName = useRef("");
     const userPass = useRef("");
 
+    const validateForm = () => {
+        const newErrors = {};
+        newErrors.username = !userName.current.value ? "Email is required" : "";
+        newErrors.password = !userPass.current.value
+            ? "Password is required" || ""
+            : userPass.current.value.length < 6
+                ? "Password must be at least 6 characters" || ""
+                : "";
+        setErrors(newErrors);
+        return Object.values(newErrors).every(value => value === '' || value === null || value === undefined)
+    };
+
     const handleLogin = async () => {
         try {
+            const validationErrors = validateForm();
+            if (!validationErrors) {
+                return;
+            }
             setLoading(true)
             const { data } = await UserService.signin({ email: userName.current.value, password: userPass.current.value })
             localStorage.setItem('user', JSON.stringify(data.user))
@@ -82,6 +100,11 @@ const SignIn = () => {
                                     id="username-text-field"
                                     placeholder="Email"
                                     inputRef={userName}
+                                    error={!!errors.username}
+                                    helperText={errors.username}
+                                    onChange={() => {
+                                        validateForm()
+                                    }}
                                 />
                             </div>
                             <div className="d-flex flex-column">
@@ -93,6 +116,11 @@ const SignIn = () => {
                                         placeholder="Password"
                                         type={isShowPass ? "text" : "password"}
                                         inputRef={userPass}
+                                        error={!!errors.password}
+                                        helperText={errors.password}
+                                        onChange={() => {
+                                            validateForm()
+                                        }}
                                     />
                                 </>
                                 <FormControlLabel
