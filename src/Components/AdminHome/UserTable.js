@@ -211,6 +211,7 @@ const UserTable = () => {
                                         <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>CompletedArtWorks</TableCell>
                                         <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>ImprogressArtWorks</TableCell>
                                         <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>TotalArtWorks</TableCell>
+                                        <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>TotalWorkingHours</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
@@ -227,6 +228,12 @@ const UserTable = () => {
                                             </TableCell>
                                             <TableCell sx={{ textAlign: 'center' }}>
                                                 {row.totalArts}
+                                            </TableCell>
+                                            <TableCell sx={{ textAlign: 'center' }}>
+                                                {row?.timeTaken?.days > 0 && ` ${row.timeTaken.days} day(s),`}
+                                                {row?.timeTaken?.hours > 0 && ` ${row.timeTaken.hours} hour(s),`}
+                                                {row?.timeTaken?.minutes > 0 && ` ${row.timeTaken.minutes} minute(s),`}
+                                                {row?.timeTaken?.seconds > 0 && ` ${row.timeTaken.seconds} second(s)`}
                                             </TableCell>
                                         </TableRow>
                                     ))}
