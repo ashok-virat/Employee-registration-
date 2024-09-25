@@ -59,6 +59,8 @@ const UserTable = () => {
         }
     }
 
+    const labels = userArts.map(item => item.ownerName);
+
     const pieData = {
         labels: ['In Progress', 'Completed'],
         datasets: [
@@ -73,13 +75,27 @@ const UserTable = () => {
     };
 
     const barData = {
-        labels: ['In Progress', 'Completed'],
+        labels: labels,
         datasets: [
             {
-                label: '# of Arts',
-                data: [chartData.inProgressCount, chartData.completedCount],
-                backgroundColor: ['rgba(255, 159, 64, 0.6)', 'rgba(75, 192, 192, 0.6)'],
-                borderColor: ['rgba(255, 159, 64, 1)', 'rgba(75, 192, 192, 1)'],
+                label: 'Total Arts',
+                data: userArts.map(item => item.totalArts),
+                backgroundColor: 'rgba(255, 159, 64, 0.6)',
+                borderColor: 'rgba(255, 159, 64, 1)',
+                borderWidth: 1,
+            },
+            {
+                label: 'Completed Arts',
+                data: userArts.map(item => item.completedArts),
+                backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1,
+            },
+            {
+                label: 'In Progress Arts',
+                data: userArts.map(item => item.inProgressArts),
+                backgroundColor: 'rgba(153, 102, 255, 0.6)',
+                borderColor: 'rgba(153, 102, 255, 1)',
                 borderWidth: 1,
             },
         ],
@@ -158,11 +174,10 @@ const UserTable = () => {
                             }
                         }} ><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M17.65 6.35A7.96 7.96 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4z" /></svg></SvgIcon></div> </div>
                     <Grid container spacing={3} className="mt-2">
-                        {/* Pie Chart */}
                         <Grid item xs={12} md={6}>
                             <Paper elevation={3} sx={{ padding: 2 }}>
                                 <Typography variant="h6" gutterBottom>
-                                    Art Work Progress
+                                    Overview
                                 </Typography>
                                 <div style={{ maxHeight: '270px', margin: '0 auto', }}>
                                     <Pie style={{ margin: '0 auto' }} data={pieData} />
@@ -170,16 +185,13 @@ const UserTable = () => {
                             </Paper>
                         </Grid>
 
-                        {/* Bar Chart */}
                         <Grid item xs={12} md={6}>
                             <Paper elevation={3} sx={{ padding: 2 }}>
                                 <Typography variant="h6" gutterBottom>
-                                    Art Status Overview
+                                    User Level Overview
                                 </Typography>
-                                <div className="d-flex">
-                                    <div style={{ minHeight: '270px', maxHeight: '250px', margin: '0 auto' }}>
-                                        <Bar tyle={{ margin: '0 auto' }} height={600} width={600} data={barData} />
-                                    </div>
+                                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '270px', maxHeight: '250px' }}>
+                                    <Bar data={barData} />
                                 </div>
                             </Paper>
                         </Grid>
